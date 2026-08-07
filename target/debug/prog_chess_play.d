@@ -1,1 +1,0 @@
-/Applications/XAMPP/xamppfiles/htdocs/prog_rust_chess_game/target/debug/prog_chess_play: /Applications/XAMPP/xamppfiles/htdocs/prog_rust_chess_game/src/create_piece.rs /Applications/XAMPP/xamppfiles/htdocs/prog_rust_chess_game/src/main.rs
