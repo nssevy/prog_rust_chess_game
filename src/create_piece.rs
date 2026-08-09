@@ -2,11 +2,11 @@
 
 #[derive(Debug)]
 pub enum TypePiece {
-    Roi, //K ing
-    Dame, // Q uenne
-    Cavalier, // N knignt
-    Tour,// R ook
-    Fou, // B ishop
+    Roi, //King
+    Dame, // Quenne
+    Cavalier, // Knignt
+    Tour,// Rook
+    Fou, // Bishop
     Pion, // P awn
     Vide
 }

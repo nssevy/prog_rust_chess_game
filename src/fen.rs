@@ -4,7 +4,7 @@ pub struct Fen {
     fen: Vec<char>
 }
 
-//crée un tableau à partir d'une chaine de str
+//Crée un tableau à partir d'une chaine de str
 fn fen(a: &str) -> Vec<char> {
     a.chars().collect()
 }
