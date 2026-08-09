@@ -1,5 +1,8 @@
 #![allow(dead_code)]
 mod create_piece;
+mod plateau;
+use crate::create_piece::Piece;
+
 
 fn fen(a: &str) -> Vec<char> {
     //crée un tableau à partir d'une chaine de str
@@ -47,9 +50,10 @@ fn main(){
 
     // Permet de reconnaitre le type de piece dans le tableau (echequier)
     for f in fen.iter(){
-        let p = create_piece::Piece::construction_de_piece(*f);
+        let p = Piece::construction_de_piece(f);
         println!("{:?}", p);
     }
 
+    //let roi = Piece::construction_de_piece('K');
     //println!("{:?}", fen);
 }

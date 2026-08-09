@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 
 #[derive(Debug)]
-enum TypePiece {
+pub enum TypePiece {
     Roi, //K ing
     Dame, // Q uenne
     Cavalier, // N knignt
@@ -12,7 +12,7 @@ enum TypePiece {
 }
 
 #[derive(Debug)]
-enum Couleur {
+pub enum Couleur {
     Blanc, // Majucule
     Noir, // Minuscule
     Vide, // Vide
@@ -20,8 +20,8 @@ enum Couleur {
 
 #[derive(Debug)]
 pub struct Piece {
-    couleur: Couleur,
-    type_piece : TypePiece,
+    pub couleur: Couleur,
+    pub type_piece : TypePiece,
 }
 
 fn couleur_piece(a: char) -> Option<Couleur> {
@@ -49,9 +49,9 @@ fn type_piece(a: char) -> Option<TypePiece>{
 // Si la fonction renvoie None crée une case vide, de type Option<Piece>
 // et les cases vides sont construite par des chiffres allant de 1 à 8.
 impl Piece {
-    pub fn construction_de_piece(a: char) -> Option<Piece> {
-        let c = couleur_piece(a);
-        let t = type_piece(a);
+    pub fn construction_de_piece(a: &char) -> Option<Piece> {
+        let c = couleur_piece(*a);
+        let t = type_piece(*a);
 
         match (c, t) {
             (Some(c),  Some(t)) => Some(Piece{couleur: c, type_piece: t}),
