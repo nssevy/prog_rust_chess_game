@@ -1,18 +1,14 @@
 #![allow(dead_code)] // Nie les variables, struct, enums... non utiliser
 #![allow(unused_imports)] // Nie les imports non utiliser
 mod create_piece;
-mod plateau;
 pub mod fen;
+mod plateau;
+use crate::plateau::{afficher_plateau, plateau};
 
 use crate::create_piece::Piece;
 use crate::fen::Fen;
 
 fn main() {
-    //Fen::who_is_type_of_fen("rnbqkbn/RNBQKBN");
-    //let roi = Piece::construction_de_piece(&'K');
-    //dbg!(roi);
-
-    let plateau = plateau::plateau("rnbqkbnr/8");
-    println!("{:?}",plateau);
-
+    let plateau = plateau("rnbqkbn/8");
+    println!("{:?}", afficher_plateau(&plateau));
 }
