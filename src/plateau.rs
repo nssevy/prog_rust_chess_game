@@ -36,7 +36,7 @@ pub fn afficher_plateau(cases: &[CaseType]) {
         while tour < 8 {
             match &cases[i] {
                 CaseType::Piece(piece) => {
-                    let symbole = piece.type_piece.affichage();
+                    let symbole = piece.affichage();
                     print!("{} ", symbole)
                 }
                 CaseType::Vide => print!("."),
