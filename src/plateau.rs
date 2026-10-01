@@ -26,18 +26,26 @@ pub fn plateau(fen: &str) -> Vec<CaseType> {
 }
 
 pub fn afficher_plateau(cases: &[CaseType]) {
-    let nbr_case: usize = cases.len(); // 16
+    let mut nbr_case: usize = cases.len(); // 16
+    dbg!(nbr_case);
     let mut i: usize = 0;
+    let mut tour: usize = 0;
 
-    while i < 8 {
-        match &cases[i] {
-            CaseType::Piece(piece) => {
-                let symbole = piece.type_piece.affichage();
-                print!("{} ", symbole)
+    while nbr_case > 0 {
+        print!("\n");
+        while tour < 8 {
+            match &cases[i] {
+                CaseType::Piece(piece) => {
+                    let symbole = piece.type_piece.affichage();
+                    print!("{} ", symbole)
+                }
+                CaseType::Vide => print!("."),
             }
-            CaseType::Vide => print!("{:?}", cases[i]),
+            i += 1;
+            tour += 1;
         }
-        i += 1;
+        nbr_case -= 8;
+        tour = 0;
     }
 }
 

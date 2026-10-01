@@ -9,6 +9,6 @@ use crate::create_piece::Piece;
 use crate::fen::Fen;
 
 fn main() {
-    let plateau = plateau("rnbqkbn/8");
-    println!("{:?}", afficher_plateau(&plateau));
+    let plateau = plateau("rnbqkbnr/RNBQKBNR");
+    afficher_plateau(&plateau);
 }
