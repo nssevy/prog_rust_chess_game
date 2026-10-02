@@ -1,4 +1,7 @@
-#![allow(dead_code)]
+/*
+Ce fichier permet de créer des pièces de jeu d'échecs.
+*/
+use crate::erreur::ErreurPlateau;
 
 #[derive(Debug)]
 pub enum TypePiece {
@@ -23,17 +26,17 @@ pub struct Piece {
 }
 
 impl Piece {
-    pub fn construction_de_piece(a: &char) -> Piece {
-        let c = couleur_piece(*a);
-        let t = type_piece(*a);
+    pub fn construction_de_piece(a: &char) -> Result<Piece, ErreurPlateau> {
+        let c = couleur_piece(*a)?;
+        let t = type_piece(*a)?;
 
-        Piece {
+        Ok(Piece {
             couleur: c,
             type_piece: t,
-        }
+        })
     }
 
-    pub fn affichage(&self) -> &str {
+    pub fn affichage_sur_plateau(&self) -> &str {
         match (&self.couleur, &self.type_piece) {
             (Couleur::Blanc, TypePiece::Roi) => "R",
             (Couleur::Blanc, TypePiece::Dame) => "Q",
@@ -52,35 +55,22 @@ impl Piece {
     }
 }
 
-impl TypePiece {
-    pub fn affichage(&self) -> &str {
-        match self {
-            TypePiece::Roi => "R",
-            TypePiece::Dame => "Q",
-            TypePiece::Cavalier => "N",
-            TypePiece::Tour => "R",
-            TypePiece::Fou => "B",
-            TypePiece::Pion => "P",
-        }
-    }
-}
-
-fn couleur_piece(lettre: char) -> Couleur {
+fn couleur_piece(lettre: char) -> Result<Couleur, ErreurPlateau> {
     match lettre {
-        'A'..='Z' => Couleur::Blanc,
-        'a'..='z' => Couleur::Noir,
-        _ => panic!("Ce n'est pas une lettre de l'alphabet"),
+        'A'..='Z' => Ok(Couleur::Blanc),
+        'a'..='z' => Ok(Couleur::Noir),
+        _ => return Err(ErreurPlateau::PieceInconnue),
     }
 }
 
-fn type_piece(a: char) -> TypePiece {
+fn type_piece(a: char) -> Result<TypePiece, ErreurPlateau> {
     match a {
-        'K' | 'k' => TypePiece::Roi,
-        'Q' | 'q' => TypePiece::Dame,
-        'N' | 'n' => TypePiece::Cavalier,
-        'R' | 'r' => TypePiece::Tour,
-        'B' | 'b' => TypePiece::Fou,
-        'P' | 'p' => TypePiece::Pion,
-        _ => panic!("La piece n'existe pas"),
+        'K' | 'k' => Ok(TypePiece::Roi),
+        'Q' | 'q' => Ok(TypePiece::Dame),
+        'N' | 'n' => Ok(TypePiece::Cavalier),
+        'R' | 'r' => Ok(TypePiece::Tour),
+        'B' | 'b' => Ok(TypePiece::Fou),
+        'P' | 'p' => Ok(TypePiece::Pion),
+        _ => return Err(ErreurPlateau::LettreInconnue),
     }
 }

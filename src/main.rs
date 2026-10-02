@@ -1,14 +1,13 @@
-#![allow(dead_code)] // Nie les variables, struct, enums... non utiliser
-#![allow(unused_imports)] // Nie les imports non utiliser
 mod create_piece;
-pub mod fen;
+mod erreur;
 mod plateau;
-use crate::plateau::{afficher_plateau, plateau};
-
-use crate::create_piece::Piece;
-use crate::fen::Fen;
+use crate::plateau::{afficher_plateau, creation_du_plateau};
 
 fn main() {
-    let plateau = plateau("rnbqkbnr/RNBQKBNR");
-    afficher_plateau(&plateau);
+    let plateau = creation_du_plateau("rnbqkbnr/8/8/8/8/8/8/RNBQKBNR");
+
+    match plateau {
+        Ok(plateau) => afficher_plateau(&plateau),
+        Err(e) => println!("Erreur: {:?}", e),
+    }
 }
