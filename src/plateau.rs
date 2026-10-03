@@ -6,11 +6,9 @@ On vient créer le tableau par rapport à la fen Afin de pouvoir déplacer les p
  */
 use crate::create_piece::Piece;
 use crate::erreur::ErreurPlateau;
-use crate::fen::calcule_taille_de_la_fen;
+use crate::fen::valider_fen_structure;
 
-const TAILLE_FEN: usize = 71;
-
-#[derive(Copy, Clone, Debug, PartialEq)] //PartialEq
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub enum CaseType {
     Piece(Piece),
     Vide,
@@ -19,12 +17,7 @@ pub enum CaseType {
 type Plateau = [[CaseType; 8]; 8];
 
 pub fn creation_du_plateau(fen: &str) -> Result<Plateau, ErreurPlateau> {
-    if calcule_taille_de_la_fen(&fen) > TAILLE_FEN {
-        return Err(ErreurPlateau::TropDeCases);
-    }
-    if calcule_taille_de_la_fen(&fen) < TAILLE_FEN {
-        return Err(ErreurPlateau::PasAssezDeCases);
-    }
+    valider_fen_structure(&fen)?;
 
     let mut plateau: Plateau = [[CaseType::Vide; 8]; 8];
     let mut ligne: usize = 0;
