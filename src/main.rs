@@ -4,7 +4,7 @@ mod plateau;
 use crate::plateau::{afficher_plateau, creation_du_plateau};
 
 fn main() {
-    let plateau = creation_du_plateau("rnbqkbnr/8/8/8/8/8/8/RNBQKBNR");
+    let plateau = creation_du_plateau("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 
     match plateau {
         Ok(plateau) => afficher_plateau(&plateau),

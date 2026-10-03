@@ -3,7 +3,7 @@ Ce fichier permet de créer des pièces de jeu d'échecs.
 */
 use crate::erreur::ErreurPlateau;
 
-#[derive(Debug)]
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub enum TypePiece {
     Roi,      //King
     Dame,     // Queen
@@ -13,13 +13,13 @@ pub enum TypePiece {
     Pion,     // P awn
 }
 
-#[derive(Debug)]
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub enum Couleur {
     Blanc, // Majucule
     Noir,  // Minuscule
 }
 
-#[derive(Debug)]
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub struct Piece {
     pub couleur: Couleur,
     pub type_piece: TypePiece,

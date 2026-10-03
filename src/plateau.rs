@@ -7,44 +7,80 @@ On vient créer le tableau par rapport à la fen Afin de pouvoir déplacer les p
 use crate::create_piece::Piece;
 use crate::erreur::ErreurPlateau;
 
-#[derive(Debug)]
+const TAILLE_FEN: usize = 71;
+
+#[derive(Copy, Clone, Debug, PartialEq)] //PartialEq
 pub enum CaseType {
     Piece(Piece),
     Vide,
 }
 
-pub fn creation_du_plateau(fen: &str) -> Result<Vec<CaseType>, ErreurPlateau> {
-    let mut plateau: Vec<CaseType> = vec![];
+type Plateau = [[CaseType; 8]; 8];
+
+pub fn calcule_taille_de_la_fen(fen: &str) -> usize {
+    let mut chiffre: usize = 0;
+    let mut lettre: usize = 0;
+
     for f in fen.chars() {
+        if f.is_ascii() && !f.is_ascii_digit() {
+            lettre += 1;
+        }
+        if f.is_ascii_digit() {
+            let value = (f as usize) - ('0' as usize);
+            chiffre += value;
+        }
+    }
+    let taille = lettre + chiffre;
+    taille
+}
+
+pub fn creation_du_plateau(fen: &str) -> Result<Plateau, ErreurPlateau> {
+    if calcule_taille_de_la_fen(&fen) > TAILLE_FEN {
+        return Err(ErreurPlateau::TropDeCases);
+    }
+    if calcule_taille_de_la_fen(&fen) < TAILLE_FEN {
+        return Err(ErreurPlateau::PasAssezDeCases);
+    }
+
+    let mut plateau: Plateau = [[CaseType::Vide; 8]; 8];
+    let mut ligne: usize = 0;
+    let mut colonne: usize = 0;
+
+    for f in fen.chars() {
+        if f == '/' {
+            ligne += 1;
+            colonne = 0;
+        }
+
         if f.is_ascii_alphabetic() {
-            plateau.push(CaseType::Piece(Piece::construction_de_piece(&f)?))
+            plateau[ligne][colonne] = CaseType::Piece(Piece::construction_de_piece(&f)?);
+            colonne += 1;
         }
 
         if f.is_ascii_digit() {
-            let chiffre: u32 = f.to_digit(10).unwrap();
-            for _ in 0..chiffre {
-                plateau.push(CaseType::Vide);
+            let chiffre: usize = (f as usize) - ('0' as usize);
+
+            while colonne == chiffre {
+                plateau[ligne][colonne] = CaseType::Vide;
+                colonne += 1;
             }
         }
-    }
-    if plateau.len() > 64 {
-        return Err(ErreurPlateau::TropDeCases);
-    }
-    if plateau.len() < 64 {
-        return Err(ErreurPlateau::PasAssezDeCases);
     }
 
     Ok(plateau)
 }
 
-pub fn afficher_plateau(cases: &[CaseType]) {
-    for ligne in cases.chunks(8) {
-        for case in ligne {
-            match case {
+pub fn afficher_plateau(cases: &Plateau) {
+    let mut i: usize = 0;
+
+    for _ in 0..8 {
+        println!("");
+        for piece in cases[i] {
+            match piece {
                 CaseType::Piece(piece) => print!("{} ", piece.affichage_sur_plateau()),
                 CaseType::Vide => print!(". "),
             }
         }
-        println!();
+        i += 1;
     }
 }
