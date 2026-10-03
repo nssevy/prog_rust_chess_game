@@ -6,6 +6,7 @@ On vient créer le tableau par rapport à la fen Afin de pouvoir déplacer les p
  */
 use crate::create_piece::Piece;
 use crate::erreur::ErreurPlateau;
+use crate::fen::calcule_taille_de_la_fen;
 
 const TAILLE_FEN: usize = 71;
 
@@ -16,23 +17,6 @@ pub enum CaseType {
 }
 
 type Plateau = [[CaseType; 8]; 8];
-
-pub fn calcule_taille_de_la_fen(fen: &str) -> usize {
-    let mut chiffre: usize = 0;
-    let mut lettre: usize = 0;
-
-    for f in fen.chars() {
-        if f.is_ascii() && !f.is_ascii_digit() {
-            lettre += 1;
-        }
-        if f.is_ascii_digit() {
-            let value = (f as usize) - ('0' as usize);
-            chiffre += value;
-        }
-    }
-    let taille = lettre + chiffre;
-    taille
-}
 
 pub fn creation_du_plateau(fen: &str) -> Result<Plateau, ErreurPlateau> {
     if calcule_taille_de_la_fen(&fen) > TAILLE_FEN {

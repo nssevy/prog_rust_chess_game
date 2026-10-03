@@ -1,5 +1,6 @@
 mod create_piece;
 mod erreur;
+mod fen;
 mod plateau;
 use crate::plateau::{afficher_plateau, creation_du_plateau};
 

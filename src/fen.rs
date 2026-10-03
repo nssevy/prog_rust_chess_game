@@ -1,6 +1,23 @@
 /*
  * Ce fichier est en pause. Il me sert strictement à rien.
  */
+
+pub fn calcule_taille_de_la_fen(fen: &str) -> usize {
+    let mut chiffre: usize = 0;
+    let mut lettre: usize = 0;
+
+    for f in fen.chars() {
+        if f.is_ascii() && !f.is_ascii_digit() {
+            lettre += 1;
+        }
+        if f.is_ascii_digit() {
+            let value = (f as usize) - ('0' as usize);
+            chiffre += value;
+        }
+    }
+    let taille = lettre + chiffre;
+    taille
+}
 /*
 use crate::create_piece::Piece;
 
