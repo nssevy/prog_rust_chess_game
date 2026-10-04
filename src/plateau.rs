@@ -16,10 +16,21 @@ pub enum CaseType {
     Vide,
 }
 
+#[derive(Debug)]
 pub struct Position {
     pub colonne: usize,
     pub ligne: usize,
 }
+
+/*struct LettreChiffre(char, usize);
+
+impl LettreChiffre {
+    fn lettre_en_chiffre() -> usize {
+
+    }
+}
+
+e7*/
 
 #[derive(Default, Debug)]
 pub struct Plateau([[CaseType; 8]; 8]);

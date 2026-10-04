@@ -6,4 +6,7 @@ pub enum ErreurPlateau {
     LettreInconnue,
     NombreIncorrecteParLigne,
     CaseVide,
+    PasUnChiffre,
+    ChaineTropCourte,
+    ChaineTropLongue,
 }
