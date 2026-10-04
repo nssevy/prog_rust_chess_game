@@ -7,19 +7,35 @@ On vient créer le tableau par rapport à la fen Afin de pouvoir déplacer les p
 use crate::create_piece::Piece;
 use crate::erreur::ErreurPlateau;
 use crate::fen::valider_fen_structure;
+use std::ops::{Index, IndexMut};
 
-#[derive(Copy, Clone, Debug, PartialEq)]
+#[derive(Copy, Clone, Debug, PartialEq, Default)]
 pub enum CaseType {
     Piece(Piece),
+    #[default]
     Vide,
 }
 
-type Plateau = [[CaseType; 8]; 8];
+#[derive(Default, Debug)]
+pub struct Plateau([[CaseType; 8]; 8]);
+
+impl Index<usize> for Plateau {
+    type Output = [CaseType; 8];
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.0[index]
+    }
+}
+
+impl IndexMut<usize> for Plateau {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        &mut self.0[index]
+    }
+}
 
 pub fn creation_du_plateau(fen: &str) -> Result<Plateau, ErreurPlateau> {
     valider_fen_structure(&fen)?;
 
-    let mut plateau: Plateau = [[CaseType::Vide; 8]; 8];
+    let mut plateau = Plateau::default();
     let mut ligne: usize = 0;
     let mut colonne: usize = 0;
 
