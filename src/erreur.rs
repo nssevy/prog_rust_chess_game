@@ -5,4 +5,5 @@ pub enum ErreurPlateau {
     PieceInconnue,
     LettreInconnue,
     NombreIncorrecteParLigne,
+    CaseVide,
 }

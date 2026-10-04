@@ -16,8 +16,26 @@ pub enum CaseType {
     Vide,
 }
 
+pub struct Position {
+    pub colonne: usize,
+    pub ligne: usize,
+}
+
 #[derive(Default, Debug)]
 pub struct Plateau([[CaseType; 8]; 8]);
+
+impl Plateau {
+    pub fn position_piece(&self, colonne: usize, ligne: usize) -> Position {
+        Position { colonne, ligne }
+    }
+
+    pub fn get_piece(&self, position: Position) -> Result<Piece, ErreurPlateau> {
+        match self[position.colonne][position.ligne] {
+            CaseType::Piece(a) => Ok(a),
+            CaseType::Vide => Err(ErreurPlateau::CaseVide),
+        }
+    }
+}
 
 impl Index<usize> for Plateau {
     type Output = [CaseType; 8];
