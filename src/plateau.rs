@@ -49,9 +49,11 @@ pub fn creation_du_plateau(fen: &str) -> Result<Plateau, ErreurPlateau> {
 
 pub fn afficher_plateau(cases: &Plateau) {
     let mut i: usize = 0;
+    let mut nombre_de_gauche: usize = 8;
 
     for _ in 0..8 {
         println!("");
+        print!("{nombre_de_gauche}    ");
         for piece in cases[i] {
             match piece {
                 CaseType::Piece(piece) => print!("{} ", piece.affichage_sur_plateau()),
@@ -59,5 +61,11 @@ pub fn afficher_plateau(cases: &Plateau) {
             }
         }
         i += 1;
+        nombre_de_gauche -= 1;
+    }
+    print!("\n");
+    print!("\n     ");
+    for lettre in 'a'..='h' {
+        print!("{lettre} ");
     }
 }

@@ -25,6 +25,26 @@ pub struct Piece {
     pub type_piece: TypePiece,
 }
 
+fn type_piece(a: char) -> Result<TypePiece, ErreurPlateau> {
+    match a {
+        'K' | 'k' => Ok(TypePiece::Roi),
+        'Q' | 'q' => Ok(TypePiece::Dame),
+        'N' | 'n' => Ok(TypePiece::Cavalier),
+        'R' | 'r' => Ok(TypePiece::Tour),
+        'B' | 'b' => Ok(TypePiece::Fou),
+        'P' | 'p' => Ok(TypePiece::Pion),
+        _ => return Err(ErreurPlateau::LettreInconnue),
+    }
+}
+
+fn couleur_piece(lettre: char) -> Result<Couleur, ErreurPlateau> {
+    match lettre {
+        'A'..='Z' => Ok(Couleur::Blanc),
+        'a'..='z' => Ok(Couleur::Noir),
+        _ => return Err(ErreurPlateau::PieceInconnue),
+    }
+}
+
 impl Piece {
     pub fn construction_de_piece(a: &char) -> Result<Piece, ErreurPlateau> {
         let c = couleur_piece(*a)?;
@@ -52,25 +72,5 @@ impl Piece {
             (Couleur::Noir, TypePiece::Fou) => "b",
             (Couleur::Noir, TypePiece::Pion) => "p",
         }
-    }
-}
-
-fn couleur_piece(lettre: char) -> Result<Couleur, ErreurPlateau> {
-    match lettre {
-        'A'..='Z' => Ok(Couleur::Blanc),
-        'a'..='z' => Ok(Couleur::Noir),
-        _ => return Err(ErreurPlateau::PieceInconnue),
-    }
-}
-
-fn type_piece(a: char) -> Result<TypePiece, ErreurPlateau> {
-    match a {
-        'K' | 'k' => Ok(TypePiece::Roi),
-        'Q' | 'q' => Ok(TypePiece::Dame),
-        'N' | 'n' => Ok(TypePiece::Cavalier),
-        'R' | 'r' => Ok(TypePiece::Tour),
-        'B' | 'b' => Ok(TypePiece::Fou),
-        'P' | 'p' => Ok(TypePiece::Pion),
-        _ => return Err(ErreurPlateau::LettreInconnue),
     }
 }
