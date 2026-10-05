@@ -16,7 +16,7 @@ pub enum CaseType {
     Vide,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Position {
     pub colonne: usize,
     pub ligne: usize,
