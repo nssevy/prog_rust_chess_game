@@ -22,16 +22,6 @@ pub struct Position {
     pub ligne: usize,
 }
 
-/*struct LettreChiffre(char, usize);
-
-impl LettreChiffre {
-    fn lettre_en_chiffre() -> usize {
-
-    }
-}
-
-e7*/
-
 #[derive(Default, Debug)]
 pub struct Plateau([[CaseType; 8]; 8]);
 
@@ -40,7 +30,7 @@ impl Plateau {
         Position { colonne, ligne }
     }
 
-    pub fn get_piece(&self, position: Position) -> Result<Piece, ErreurPlateau> {
+    pub fn get_piece(&self, position: &Position) -> Result<Piece, ErreurPlateau> {
         match self[position.colonne][position.ligne] {
             CaseType::Piece(a) => Ok(a),
             CaseType::Vide => Err(ErreurPlateau::CaseVide),
@@ -90,27 +80,4 @@ pub fn creation_du_plateau(fen: &str) -> Result<Plateau, ErreurPlateau> {
     }
 
     Ok(plateau)
-}
-
-pub fn afficher_plateau(cases: &Plateau) {
-    let mut i: usize = 0;
-    let mut nombre_de_gauche: usize = 8;
-
-    for _ in 0..8 {
-        println!("");
-        print!("{nombre_de_gauche}    ");
-        for piece in cases[i] {
-            match piece {
-                CaseType::Piece(piece) => print!("{} ", piece.affichage_sur_plateau()),
-                CaseType::Vide => print!(". "),
-            }
-        }
-        i += 1;
-        nombre_de_gauche -= 1;
-    }
-    print!("\n");
-    print!("\n     ");
-    for lettre in 'a'..='h' {
-        print!("{lettre} ");
-    }
 }

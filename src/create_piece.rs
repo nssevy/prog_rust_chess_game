@@ -55,22 +55,4 @@ impl Piece {
             type_piece: t,
         })
     }
-
-    pub fn affichage_sur_plateau(&self) -> &str {
-        match (&self.couleur, &self.type_piece) {
-            (Couleur::Blanc, TypePiece::Roi) => "K",
-            (Couleur::Blanc, TypePiece::Dame) => "Q",
-            (Couleur::Blanc, TypePiece::Cavalier) => "N",
-            (Couleur::Blanc, TypePiece::Tour) => "R",
-            (Couleur::Blanc, TypePiece::Fou) => "B",
-            (Couleur::Blanc, TypePiece::Pion) => "P",
-            //___
-            (Couleur::Noir, TypePiece::Roi) => "k",
-            (Couleur::Noir, TypePiece::Dame) => "q",
-            (Couleur::Noir, TypePiece::Cavalier) => "n",
-            (Couleur::Noir, TypePiece::Tour) => "r",
-            (Couleur::Noir, TypePiece::Fou) => "b",
-            (Couleur::Noir, TypePiece::Pion) => "p",
-        }
-    }
 }
