@@ -25,7 +25,7 @@ pub struct Piece {
     pub type_piece: TypePiece,
 }
 
-fn type_piece(a: char) -> Result<TypePiece, ErreurPlateau> {
+pub fn type_piece(a: char) -> Result<TypePiece, ErreurPlateau> {
     match a {
         'K' | 'k' => Ok(TypePiece::Roi),
         'Q' | 'q' => Ok(TypePiece::Dame),

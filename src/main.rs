@@ -17,7 +17,7 @@ fn main() {
 
     let position_saisis: String = demander_position();
 
-    let position: Position = match get_position_piece(&fen, &position_saisis) {
+    let position: Position = match get_position_piece(&plateau, &position_saisis) {
         Ok(a) => a,
         Err(e) => return println!("Erreur : {:?}", e),
     };

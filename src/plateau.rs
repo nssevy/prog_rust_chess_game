@@ -81,6 +81,5 @@ pub fn creation_du_plateau(fen: &str) -> Result<Plateau, ErreurPlateau> {
             }
         }
     }
-
     Ok(plateau)
 }

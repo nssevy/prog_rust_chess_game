@@ -59,35 +59,3 @@ pub fn valider_fen_structure(fen: &str) -> Result<usize, ErreurPlateau> {
         false => Err(ErreurPlateau::NombreIncorrecteParLigne),
     })
 }
-
-/* L'idée est de venir tester un char (exemple: r ou b) avec toute la fen et donner la sa colonne à partir de sa position dans la fen.
-*/
-pub fn extraire_colonnes_piece_fen(fen: &str, piece: char) -> Vec<usize> {
-    let placement = fen.split_whitespace().next().unwrap_or("");
-    let mut colonnes = Vec::new();
-
-    for rangee in placement.split('/') {
-        let mut colonne = 0;
-        for c in rangee.chars() {
-            if let Some(vides) = c.to_digit(10) {
-                colonne += vides as usize;
-            } else {
-                if c == piece {
-                    colonnes.push(colonne);
-                }
-                colonne += 1;
-            }
-        }
-    }
-    colonnes
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn get_l_index_des_colonnes_ou_la_piece_fou_noir() {
-        let fen: &str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
-        assert_eq!(extraire_colonnes_piece_fen(fen, 'b'), [2, 5])
-    }
-}
