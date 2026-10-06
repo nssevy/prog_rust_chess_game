@@ -24,8 +24,8 @@ fn main() {
 
     match plateau.get_piece(&position) {
         Ok(piece) => println!(
-            "Vous avez saisis : {} \nLa position sur le plateau est : {:?} \nA cette position il y a la piece : {:?}",
-            &position_saisis, &position, piece
+            "\nVous avez saisis : {}\nA cette position il y a la piece : {:?}",
+            &position_saisis, piece
         ),
         Err(e) => return println!("{:?}", e),
     };
