@@ -60,6 +60,8 @@ pub fn valider_fen_structure(fen: &str) -> Result<usize, ErreurPlateau> {
     })
 }
 
+/* L'idée est de venir tester un char (exemple: r ou b) avec toute la fen et donner la sa colonne à partir de sa position dans la fen.
+*/
 pub fn extraire_colonnes_piece_fen(fen: &str, piece: char) -> Vec<usize> {
     let placement = fen.split_whitespace().next().unwrap_or("");
     let mut colonnes = Vec::new();

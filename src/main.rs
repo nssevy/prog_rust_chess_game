@@ -3,8 +3,7 @@ mod erreur;
 mod fen;
 mod plateau;
 mod user_interface;
-use crate::erreur::ErreurPlateau;
-use crate::plateau::creation_du_plateau;
+use crate::plateau::{Position, creation_du_plateau};
 use crate::user_interface::{afficher_plateau, demander_position, get_position_piece};
 
 fn main() {
@@ -18,7 +17,7 @@ fn main() {
 
     let position_saisis: String = demander_position();
 
-    let position = match get_position_piece(&fen, &position_saisis) {
+    let position: Position = match get_position_piece(&fen, &position_saisis) {
         Ok(a) => a,
         Err(e) => return println!("Erreur : {:?}", e),
     };

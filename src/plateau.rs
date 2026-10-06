@@ -9,6 +9,8 @@ use crate::erreur::ErreurPlateau;
 use crate::fen::valider_fen_structure;
 use std::ops::{Index, IndexMut};
 
+pub const TAILLE_PLATEAU: usize = 8;
+
 #[derive(Copy, Clone, Debug, PartialEq, Default)]
 pub enum CaseType {
     Piece(Piece),
@@ -18,21 +20,22 @@ pub enum CaseType {
 
 #[derive(Debug, PartialEq)]
 pub struct Position {
+    pub rangee: usize,
     pub colonne: usize,
-    pub ligne: usize,
 }
 
 #[derive(Default, Debug)]
-pub struct Plateau([[CaseType; 8]; 8]);
+pub struct Plateau([[CaseType; TAILLE_PLATEAU]; TAILLE_PLATEAU]);
 
 impl Plateau {
+    /*
     pub fn position_piece(&self, colonne: usize, ligne: usize) -> Position {
         Position { colonne, ligne }
-    }
+    }*/
 
     pub fn get_piece(&self, position: &Position) -> Result<Piece, ErreurPlateau> {
-        match self[position.colonne][position.ligne] {
-            CaseType::Piece(a) => Ok(a),
+        match self[position.rangee][position.colonne] {
+            CaseType::Piece(piece) => Ok(piece),
             CaseType::Vide => Err(ErreurPlateau::CaseVide),
         }
     }
