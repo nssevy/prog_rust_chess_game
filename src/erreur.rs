@@ -10,7 +10,7 @@ pub enum ErreurPlateau {
     CaseVide,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum ErreurSaisie {
     PieceAbsenteDeLaColonne {
         piece: char,
@@ -18,9 +18,10 @@ pub enum ErreurSaisie {
         colonnes_trouvees: Vec<usize>,
     },
     MauvaisePiece {
-        piece: char,
-        rangee_attendue: usize,
-        pieces_trouvees: Piece,
+        piece_attendu: Piece,
+        piece_trouve: Piece,
+        colonne: usize,
+        rangee: usize,
     },
     TropCourte,
     TropLongue,

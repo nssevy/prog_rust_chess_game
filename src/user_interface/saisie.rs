@@ -29,22 +29,6 @@ fn extraire_colonnes_piece(cases: &Plateau, piece: char) -> Result<Vec<usize>, E
     Ok(tableau_colonne_piece)
 }
 
-/*
-L'idée derrière get_colonne() est que à partir de bc8 qui veut dire -> Bishop(fou) en colonne c rangée 8.
-
-ESt de venir récuperer la piece -> b et la colonne -> c afin de vérifié une correspondance.
-
-Si la fonction extraire_colonnes_piece() retourne un tableau de [2, 4], alors ca veut dire qu'il y a bien un fou qui est sur la colonne c(2) donc la colonne est bien égale à 2.
-
-En revanche qui la fonction extraire_colonnes_piece_fen() retourne un tableau de [3, 7] ca veut dire qu'il n'y a pas de fou sur la colonne c(2) donc l'utilisateur à saisis une position invalide.
-*/
-
-/*
-Remplacer la fen, par le plateau afin d'obenir toutes les colonnes sur lesquelles une piece ou un pion se trouve, car dans tout les cas c'est le plateau qui change au fur à mesure de la partie donc autant se basé dessus.
-
-+ si l'utilisateur entre une position avec par exemple un pion soit pa7 comme dès le début il y a 8 pions sur l'échequier, on peut ecrire la fonction de recherche dichotomique afin d'évité parcourir tout le tableau de colonne. Car le tableau sera rangée par ordre croissant, et on sait deja quelle valeur l'on veut chercher.
-*/
-
 fn get_colonne(
     cases: &Plateau,
     colonne_en_lettre: char,
@@ -52,21 +36,8 @@ fn get_colonne(
 ) -> Result<usize, ErreurSaisie> {
     let colonne_en_chiffre: usize = convertit_les_colonne_en_lettre_en_chiffre(colonne_en_lettre)?;
 
-    /*let Ok(tableau_de_colonne) = extraire_colonnes_piece(&cases, piece_en_lettre) else {
-        return Err(ErreurSaisie::TropCourte);
-    };*/
-
     let tableau_de_colonne = extraire_colonnes_piece(cases, piece_en_lettre)?;
 
-    /*let colonne = if tableau_de_colonne.contains(&colonne_en_chiffre) {
-        Ok(colonne_en_chiffre)
-    } else {
-        return Err(ErreurSaisie::PieceAbsenteDeLaColonne {
-            piece: piece_en_lettre,
-            colonne_attendue: colonne_en_chiffre,
-            colonnes_trouvees: tableau_de_colonne,
-        });
-    };*/
     match tableau_de_colonne.contains(&colonne_en_chiffre) {
         true => return Ok(colonne_en_chiffre),
         false => {
@@ -109,61 +80,24 @@ pub fn get_position_piece(
     let rangee: usize = rangee_en_index(range_en_chiffre(tuple.2)?);
 
     let position = Position {
-        colonne: colonne?,
+        colonne: colonne.clone()?,
         rangee: rangee,
     };
 
     let piece_extraite: Piece = Piece::construction_de_piece(&tuple.0)?;
 
-    match x_case_contient_piece_a(cases, &position, piece_extraite) {
-        true => Ok(position),
-        false => {
+    match cases.get_piece(&position) {
+        Ok(piece) if piece == piece_extraite => return Ok(position),
+        Ok(piece_trouvee) => {
             return Err(ErreurSaisie::MauvaisePiece {
-                piece: tuple.0,
-                rangee_attendue: rangee,
-                pieces_trouvees: piece_extraite,
-            });
-        }
-    }
-    //fn x_case_contient_piece_a(plateau: Plateau, position: Position, piece: Piece) -> bool {
-
-    /*match position {
-        position if position == piece_extraite => {
-            return Ok(Position {
+                piece_attendu: piece_extraite,
+                piece_trouve: piece_trouvee, // Maintenant accessible !
                 colonne: colonne?,
                 rangee: rangee,
             });
         }
-        _ => {
-            return Err(ErreurSaisie::MauvaisePiece {
-                piece: tuple.0,
-                rangee_attendue: rangee,
-                pieces_trouvees: piece_extraite,
-            });
-        }
-    }*/
-
-    /*Ok(Position {
-        colonne: colonne?,
-        rangee: rangee,
-    })*/
-
-    //Avec bc7 je dois verifié si à la rangé 8 il y a bien un fou
-}
-
-// Il faut une fonction qui prends en entrée une position, le plateau, et une piece.
-// Avec la positon on regarde quelle type de piece il y a cette position.
-// Si il y a bien la meme piece on renvoi true sinon on renvoie l'erreur MauvaisePiece.
-
-//Ok(colonne?)
-
-fn x_case_contient_piece_a(plateau: &Plateau, position: &Position, piece: Piece) -> bool {
-    let piece_sur_le_plateau = match plateau.get_piece(&position) {
-        Ok(piece) => piece,
-        Err(_) => return false,
-    };
-
-    piece_sur_le_plateau == piece
+        Err(e) => return Err(e.into()),
+    }
 }
 
 #[cfg(test)]
