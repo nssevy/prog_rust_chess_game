@@ -26,6 +26,7 @@ pub enum ErreurSaisie {
     TropCourte,
     TropLongue,
     RangeeInvalide,
+    ColonneInvalide,
     Plateau(ErreurPlateau),
 }
 

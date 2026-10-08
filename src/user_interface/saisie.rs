@@ -3,10 +3,10 @@ use crate::erreur::{ErreurPlateau, ErreurSaisie};
 use crate::plateau::{CaseType, Plateau, Position, TAILLE_PLATEAU};
 
 fn convertit_les_colonne_en_lettre_en_chiffre(lettre: char) -> Result<usize, ErreurSaisie> {
-    let chiffre = ('a'..='h')
-        .contains(&lettre)
-        .then(|| ((lettre as u32) - ('a' as u32)) as usize)
-        .ok_or(ErreurSaisie::RangeeInvalide)?;
+    if !('a'..='h').contains(&lettre) {
+        return Err(ErreurSaisie::ColonneInvalide);
+    }
+    let chiffre = ((lettre as u32) - ('a' as u32)) as usize;
     Ok(chiffre)
 }
 
