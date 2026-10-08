@@ -2,9 +2,9 @@ use crate::create_piece::Piece;
 use crate::erreur::{ErreurPlateau, ErreurSaisie};
 use crate::plateau::{CaseType, Plateau, Position, TAILLE_PLATEAU};
 
-fn convertit_les_colonne_en_lettre_en_chiffre(lettre: char) -> Result<usize, ErreurSaisie> {
+fn convertit_les_colonnes_en_lettre_en_chiffre(lettre: char) -> Result<usize, ErreurSaisie> {
     if !('a'..='h').contains(&lettre) {
-        return Err(ErreurSaisie::ColonneInvalide);
+        return Err(ErreurSaisie::ColonneInvalide(lettre));
     }
     let chiffre = ((lettre as u32) - ('a' as u32)) as usize;
     Ok(chiffre)
@@ -34,27 +34,30 @@ fn get_colonne(
     colonne_en_lettre: char,
     piece_en_lettre: char,
 ) -> Result<usize, ErreurSaisie> {
-    let colonne_en_chiffre: usize = convertit_les_colonne_en_lettre_en_chiffre(colonne_en_lettre)?;
+    let colonne: usize = convertit_les_colonnes_en_lettre_en_chiffre(colonne_en_lettre)?;
 
     let tableau_de_colonne = extraire_colonnes_piece(cases, piece_en_lettre)?;
 
-    match tableau_de_colonne.contains(&colonne_en_chiffre) {
-        true => return Ok(colonne_en_chiffre),
+    match tableau_de_colonne.contains(&colonne) {
+        true => return Ok(colonne),
         false => {
             return Err(ErreurSaisie::PieceAbsenteDeLaColonne {
                 piece: piece_en_lettre,
-                colonne_attendue: colonne_en_chiffre,
+                colonne_attendue: colonne,
                 colonnes_trouvees: tableau_de_colonne,
             });
         }
     };
 }
 
-fn range_en_chiffre(chiffre_en_char: char) -> Result<usize, ErreurSaisie> {
+fn rangee_en_chiffre(chiffre_en_char: char) -> Result<usize, ErreurSaisie> {
+    if !('1'..='8').contains(&chiffre_en_char) {
+        return Err(ErreurSaisie::RangeeInvalide(chiffre_en_char));
+    }
     chiffre_en_char
         .to_digit(10)
         .map(|chiffre| chiffre as usize)
-        .ok_or(ErreurSaisie::RangeeInvalide)
+        .ok_or(ErreurSaisie::RangeeInvalide(chiffre_en_char))
 }
 
 fn rangee_en_index(rangee_en_lettre: usize) -> usize {
@@ -77,7 +80,7 @@ pub fn get_position_piece(
 
     let colonne: Result<usize, ErreurSaisie> = get_colonne(&cases, tuple.1, tuple.0);
 
-    let rangee: usize = rangee_en_index(range_en_chiffre(tuple.2)?);
+    let rangee: usize = rangee_en_index(rangee_en_chiffre(tuple.2)?);
 
     let position = Position {
         colonne: colonne.clone()?,
@@ -91,7 +94,7 @@ pub fn get_position_piece(
         Ok(piece_trouvee) => {
             return Err(ErreurSaisie::MauvaisePiece {
                 piece_attendu: piece_extraite,
-                piece_trouve: piece_trouvee, // Maintenant accessible !
+                piece_trouve: piece_trouvee,
                 colonne: colonne?,
                 rangee: rangee,
             });
