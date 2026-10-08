@@ -52,11 +52,13 @@ fn get_colonne(
 ) -> Result<usize, ErreurSaisie> {
     let colonne_en_chiffre: usize = convertit_les_colonne_en_lettre_en_chiffre(colonne_en_lettre)?;
 
-    let Ok(tableau_de_colonne) = extraire_colonnes_piece(&cases, piece_en_lettre) else {
+    /*let Ok(tableau_de_colonne) = extraire_colonnes_piece(&cases, piece_en_lettre) else {
         return Err(ErreurSaisie::TropCourte);
-    };
+    };*/
 
-    let colonne = if tableau_de_colonne.contains(&colonne_en_chiffre) {
+    let tableau_de_colonne = extraire_colonnes_piece(cases, piece_en_lettre)?;
+
+    /*let colonne = if tableau_de_colonne.contains(&colonne_en_chiffre) {
         Ok(colonne_en_chiffre)
     } else {
         return Err(ErreurSaisie::PieceAbsenteDeLaColonne {
@@ -64,9 +66,17 @@ fn get_colonne(
             colonne_attendue: colonne_en_chiffre,
             colonnes_trouvees: tableau_de_colonne,
         });
+    };*/
+    match tableau_de_colonne.contains(&colonne_en_chiffre) {
+        true => return Ok(colonne_en_chiffre),
+        false => {
+            return Err(ErreurSaisie::PieceAbsenteDeLaColonne {
+                piece: piece_en_lettre,
+                colonne_attendue: colonne_en_chiffre,
+                colonnes_trouvees: tableau_de_colonne,
+            });
+        }
     };
-
-    Ok(colonne?)
 }
 
 fn range_en_chiffre(chiffre_en_char: char) -> Result<usize, ErreurSaisie> {
@@ -98,10 +108,62 @@ pub fn get_position_piece(
 
     let rangee: usize = rangee_en_index(range_en_chiffre(tuple.2)?);
 
-    Ok(Position {
+    let position = Position {
         colonne: colonne?,
         rangee: rangee,
-    })
+    };
+
+    let piece_extraite: Piece = Piece::construction_de_piece(&tuple.0)?;
+
+    match x_case_contient_piece_a(cases, &position, piece_extraite) {
+        true => Ok(position),
+        false => {
+            return Err(ErreurSaisie::MauvaisePiece {
+                piece: tuple.0,
+                rangee_attendue: rangee,
+                pieces_trouvees: piece_extraite,
+            });
+        }
+    }
+    //fn x_case_contient_piece_a(plateau: Plateau, position: Position, piece: Piece) -> bool {
+
+    /*match position {
+        position if position == piece_extraite => {
+            return Ok(Position {
+                colonne: colonne?,
+                rangee: rangee,
+            });
+        }
+        _ => {
+            return Err(ErreurSaisie::MauvaisePiece {
+                piece: tuple.0,
+                rangee_attendue: rangee,
+                pieces_trouvees: piece_extraite,
+            });
+        }
+    }*/
+
+    /*Ok(Position {
+        colonne: colonne?,
+        rangee: rangee,
+    })*/
+
+    //Avec bc7 je dois verifié si à la rangé 8 il y a bien un fou
+}
+
+// Il faut une fonction qui prends en entrée une position, le plateau, et une piece.
+// Avec la positon on regarde quelle type de piece il y a cette position.
+// Si il y a bien la meme piece on renvoi true sinon on renvoie l'erreur MauvaisePiece.
+
+//Ok(colonne?)
+
+fn x_case_contient_piece_a(plateau: &Plateau, position: &Position, piece: Piece) -> bool {
+    let piece_sur_le_plateau = match plateau.get_piece(&position) {
+        Ok(piece) => piece,
+        Err(_) => return false,
+    };
+
+    piece_sur_le_plateau == piece
 }
 
 #[cfg(test)]

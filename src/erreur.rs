@@ -1,3 +1,5 @@
+use crate::create_piece::Piece;
+
 #[derive(Debug, PartialEq, Clone)]
 pub enum ErreurPlateau {
     TropDeCases,
@@ -15,7 +17,19 @@ pub enum ErreurSaisie {
         colonne_attendue: usize,
         colonnes_trouvees: Vec<usize>,
     },
+    MauvaisePiece {
+        piece: char,
+        rangee_attendue: usize,
+        pieces_trouvees: Piece,
+    },
     TropCourte,
     TropLongue,
     RangeeInvalide,
+    Plateau(ErreurPlateau),
+}
+
+impl From<ErreurPlateau> for ErreurSaisie {
+    fn from(erreur: ErreurPlateau) -> Self {
+        ErreurSaisie::Plateau(erreur)
+    }
 }
