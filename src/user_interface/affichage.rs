@@ -4,19 +4,19 @@ use std::io::{self, Write};
 
 pub fn affichage_sur_plateau(piece: &Piece) -> &str {
     match (piece.couleur, piece.type_piece) {
-        (Couleur::Blanc, TypePiece::Roi) => "K",
-        (Couleur::Blanc, TypePiece::Dame) => "Q",
-        (Couleur::Blanc, TypePiece::Cavalier) => "N",
-        (Couleur::Blanc, TypePiece::Tour) => "R",
-        (Couleur::Blanc, TypePiece::Fou) => "B",
-        (Couleur::Blanc, TypePiece::Pion) => "P",
+        (Couleur::Blanc, TypePiece::Roi) => "♚",
+        (Couleur::Blanc, TypePiece::Dame) => "♛",
+        (Couleur::Blanc, TypePiece::Cavalier) => "♞",
+        (Couleur::Blanc, TypePiece::Tour) => "♜",
+        (Couleur::Blanc, TypePiece::Fou) => "♝",
+        (Couleur::Blanc, TypePiece::Pion) => "♟",
         //___
-        (Couleur::Noir, TypePiece::Roi) => "k",
-        (Couleur::Noir, TypePiece::Dame) => "q",
-        (Couleur::Noir, TypePiece::Cavalier) => "n",
-        (Couleur::Noir, TypePiece::Tour) => "r",
-        (Couleur::Noir, TypePiece::Fou) => "b",
-        (Couleur::Noir, TypePiece::Pion) => "p",
+        (Couleur::Noir, TypePiece::Roi) => "♔",
+        (Couleur::Noir, TypePiece::Dame) => "♕",
+        (Couleur::Noir, TypePiece::Cavalier) => "♘",
+        (Couleur::Noir, TypePiece::Tour) => "♖",
+        (Couleur::Noir, TypePiece::Fou) => "♗",
+        (Couleur::Noir, TypePiece::Pion) => "♙",
     }
 }
 
