@@ -3,8 +3,8 @@ mod erreur;
 mod fen;
 mod plateau;
 mod user_interface;
-use crate::plateau::{Position, creation_du_plateau};
-use crate::user_interface::{afficher_plateau, demander_position, get_position_piece};
+use crate::plateau::creation_du_plateau;
+use crate::user_interface::{afficher_plateau, demander_saisie, get_position_piece};
 
 fn main() {
     let fen: &str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
@@ -15,18 +15,14 @@ fn main() {
 
     afficher_plateau(&plateau);
 
-    let position_saisis: String = demander_position();
+    let questions = ["Séléctionner une cases : ", "Case de fin : "];
+    let mut reponses = Vec::new();
 
-    let position: Position = match get_position_piece(&plateau, &position_saisis) {
-        Ok(a) => a,
-        Err(e) => return println!("Erreur : {:?}", e),
-    };
+    for question in questions {
+        let saisie = demander_saisie(question);
+        reponses.push(saisie);
+    }
 
-    match plateau.get_piece(&position) {
-        Ok(piece) => println!(
-            "\nVous avez saisis : {}\nA cette position il y a la piece : {:?}",
-            &position_saisis, piece
-        ),
-        Err(e) => return println!("{:?}", e),
-    };
+    println!("{:?}", get_position_piece(&plateau, &reponses[0]));
+    println!("{:?}", get_position_piece(&plateau, &reponses[1]));
 }

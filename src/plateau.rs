@@ -39,6 +39,8 @@ impl Plateau {
             CaseType::Vide => Err(ErreurPlateau::CaseVide),
         }
     }
+
+    //fn deplacer_pion(&self, position_depart: Position, position_fin: Position) {}
 }
 
 impl Index<usize> for Plateau {

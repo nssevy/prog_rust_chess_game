@@ -10,14 +10,14 @@ fn convertit_les_colonnes_en_lettre_en_chiffre(lettre: char) -> Result<usize, Er
     Ok(chiffre)
 }
 
-fn extraire_colonnes_piece(cases: &Plateau, piece: char) -> Result<Vec<usize>, ErreurPlateau> {
+fn extraire_colonnes_piece(plateau: &Plateau, piece: char) -> Result<Vec<usize>, ErreurPlateau> {
     let piece_extraite: Piece = Piece::construction_de_piece(&piece)?;
     let mut tableau_colonne_piece: Vec<usize> = vec![];
 
     let mut i: usize = 0;
 
     for _ in 0..8 {
-        for (colonne, piece) in cases[i].into_iter().enumerate() {
+        for (colonne, piece) in plateau[i].into_iter().enumerate() {
             match piece {
                 CaseType::Piece(p) if p == piece_extraite => tableau_colonne_piece.push(colonne),
                 _ => {}
@@ -30,13 +30,13 @@ fn extraire_colonnes_piece(cases: &Plateau, piece: char) -> Result<Vec<usize>, E
 }
 
 fn get_colonne(
-    cases: &Plateau,
+    plateau: &Plateau,
     colonne_en_lettre: char,
     piece_en_lettre: char,
 ) -> Result<usize, ErreurSaisie> {
     let colonne: usize = convertit_les_colonnes_en_lettre_en_chiffre(colonne_en_lettre)?;
 
-    let tableau_de_colonne = extraire_colonnes_piece(cases, piece_en_lettre)?;
+    let tableau_de_colonne = extraire_colonnes_piece(plateau, piece_en_lettre)?;
 
     match tableau_de_colonne.contains(&colonne) {
         true => return Ok(colonne),
@@ -65,7 +65,7 @@ fn rangee_en_index(rangee_en_lettre: usize) -> usize {
 }
 
 pub fn get_position_piece(
-    cases: &Plateau,
+    plateau: &Plateau,
     position_saisis: &str,
 ) -> Result<Position, ErreurSaisie> {
     let mut chars = position_saisis.chars();
@@ -78,7 +78,7 @@ pub fn get_position_piece(
         _ => return Err(ErreurSaisie::TropCourte),
     };
 
-    let colonne: Result<usize, ErreurSaisie> = get_colonne(&cases, tuple.1, tuple.0);
+    let colonne: Result<usize, ErreurSaisie> = get_colonne(&plateau, tuple.1, tuple.0);
 
     let rangee: usize = rangee_en_index(rangee_en_chiffre(tuple.2)?);
 
@@ -89,7 +89,7 @@ pub fn get_position_piece(
 
     let piece_extraite: Piece = Piece::construction_de_piece(&tuple.0)?;
 
-    match cases.get_piece(&position) {
+    match plateau.get_piece(&position) {
         Ok(piece) if piece == piece_extraite => return Ok(position),
         Ok(piece_trouvee) => {
             return Err(ErreurSaisie::MauvaisePiece {

@@ -43,17 +43,14 @@ pub fn afficher_plateau(cases: &Plateau) {
     }
 }
 
-pub fn demander_position() -> String {
-    print!("\nJouer une position : ");
+pub fn demander_saisie(question: &str) -> String {
+    print!("{question}");
     io::stdout().flush().unwrap();
 
-    let mut position_saisie = String::new();
+    let mut reponse = String::new();
     io::stdin()
-        .read_line(&mut position_saisie)
+        .read_line(&mut reponse)
         .expect("Échec de la lecture");
 
-    print!("\x1B[A\x1B[2K");
-    io::stdout().flush().unwrap();
-
-    position_saisie.trim().to_string()
+    reponse.trim().to_string()
 }
