@@ -4,7 +4,9 @@ mod fen;
 mod plateau;
 mod user_interface;
 use crate::plateau::creation_du_plateau;
-use crate::user_interface::{afficher_plateau, demander_saisie, get_position_piece};
+use crate::user_interface::{
+    afficher_plateau, demander_saisie, get_position_piece, get_position_plateau,
+};
 
 fn main() {
     let fen: &str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
@@ -24,5 +26,5 @@ fn main() {
     }
 
     println!("{:?}", get_position_piece(&plateau, &reponses[0]));
-    println!("{:?}", get_position_piece(&plateau, &reponses[1]));
+    println!("{:?}", get_position_plateau(&reponses[1]));
 }

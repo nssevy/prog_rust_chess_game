@@ -41,6 +41,7 @@ pub fn afficher_plateau(cases: &Plateau) {
     for lettre in 'a'..='h' {
         print!("{lettre} ");
     }
+    print!("\n");
 }
 
 pub fn demander_saisie(question: &str) -> String {

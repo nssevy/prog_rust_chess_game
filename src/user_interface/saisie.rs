@@ -103,10 +103,37 @@ pub fn get_position_piece(
     }
 }
 
+pub fn get_position_plateau(position_saisis: &str) -> Result<Position, ErreurSaisie> {
+    let mut chars = position_saisis.chars();
+
+    let tuple = match (chars.next(), chars.next(), chars.next()) {
+        (Some(colonne), Some(rangee), None) => (colonne, rangee),
+        (_, _, Some(_)) => return Err(ErreurSaisie::TropLongue),
+        _ => return Err(ErreurSaisie::TropCourte),
+    };
+
+    let colonne: usize = convertit_les_colonnes_en_lettre_en_chiffre(tuple.0)?;
+    let rangee: usize = rangee_en_index(rangee_en_chiffre(tuple.1)?);
+
+    Ok(Position {
+        colonne: colonne,
+        rangee: rangee,
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::creation_du_plateau;
+
+    #[test]
+    fn la_position_e6_retourne_la_position_colonne_4_et_rangee_2() {
+        let position = Position {
+            colonne: 4,
+            rangee: 2,
+        };
+        assert_eq!(position, get_position_plateau("e6").unwrap())
+    }
 
     #[test]
     fn dans_la_fen_initiale_la_lettre_n_apparait_2_fois_dans_le_plateau_au_colonne_1_et_6() {

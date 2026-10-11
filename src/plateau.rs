@@ -20,8 +20,8 @@ pub enum CaseType {
 
 #[derive(Debug, PartialEq)]
 pub struct Position {
-    pub rangee: usize,
     pub colonne: usize,
+    pub rangee: usize,
 }
 
 #[derive(Default, Debug)]
