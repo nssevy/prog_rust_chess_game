@@ -1,6 +1,5 @@
 use crate::create_piece::{Couleur, Piece, TypePiece};
 use crate::plateau::{CaseType, Plateau};
-use std::io::{self, Write};
 
 pub fn affichage_sur_plateau(piece: &Piece) -> &str {
     match (piece.couleur, piece.type_piece) {
@@ -42,16 +41,4 @@ pub fn afficher_plateau(cases: &Plateau) {
         print!("{lettre} ");
     }
     print!("\n");
-}
-
-pub fn demander_saisie(question: &str) -> String {
-    print!("{question}");
-    io::stdout().flush().unwrap();
-
-    let mut reponse = String::new();
-    io::stdin()
-        .read_line(&mut reponse)
-        .expect("Échec de la lecture");
-
-    reponse.trim().to_string()
 }
