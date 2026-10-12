@@ -50,8 +50,8 @@ pub fn huit_elements_par_ligne(fen: &str) -> bool {
 
 pub fn valider_fen_structure(fen: &str) -> Result<usize, ErreurPlateau> {
     match calcule_taille_de_la_fen(fen) {
-        n if n > TAILLE_FEN => Err(ErreurPlateau::TropDeCases),
-        n if n < TAILLE_FEN => Err(ErreurPlateau::PasAssezDeCases),
+        n if n > TAILLE_FEN => Err(ErreurPlateau::TropDeCases(n - TAILLE_FEN)),
+        n if n < TAILLE_FEN => Err(ErreurPlateau::PasAssezDeCases(TAILLE_FEN - n)),
         _ => Ok(0),
     }
     .and_then(|_| match huit_elements_par_ligne(fen) {

@@ -2,8 +2,8 @@ use crate::create_piece::Piece;
 
 #[derive(Debug, PartialEq, Clone)]
 pub enum ErreurPlateau {
-    TropDeCases,
-    PasAssezDeCases,
+    TropDeCases(usize),
+    PasAssezDeCases(usize),
     NombreIncorrecteParLigne,
     CaseVide,
     Piece(ErreurPiece),

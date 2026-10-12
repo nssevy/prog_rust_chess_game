@@ -9,7 +9,7 @@ use crate::user_interface::{
 };
 
 fn main() {
-    let fen: &str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+    let fen: &str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBN";
     let plateau = match creation_du_plateau(&fen) {
         Ok(plateau) => plateau,
         Err(e) => return println!("Erreur : {:?}", e),
