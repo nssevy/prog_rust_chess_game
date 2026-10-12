@@ -4,10 +4,15 @@ use crate::create_piece::Piece;
 pub enum ErreurPlateau {
     TropDeCases,
     PasAssezDeCases,
-    PieceInconnue,
-    LettreInconnue,
     NombreIncorrecteParLigne,
     CaseVide,
+    Piece(ErreurPiece),
+}
+
+#[derive(Debug, PartialEq, Clone)]
+pub enum ErreurPiece {
+    PieceInconnue,
+    LettreInconnue(char),
 }
 
 #[derive(Debug, PartialEq, Clone)]
@@ -28,10 +33,22 @@ pub enum ErreurSaisie {
     RangeeInvalide(char),
     ColonneInvalide(char),
     Plateau(ErreurPlateau),
+    Piece(ErreurPiece),
 }
 
 impl From<ErreurPlateau> for ErreurSaisie {
     fn from(erreur: ErreurPlateau) -> Self {
         ErreurSaisie::Plateau(erreur)
+    }
+}
+
+impl From<ErreurPiece> for ErreurPlateau {
+    fn from(erreur: ErreurPiece) -> Self {
+        ErreurPlateau::Piece(erreur)
+    }
+}
+impl From<ErreurPiece> for ErreurSaisie {
+    fn from(erreur: ErreurPiece) -> Self {
+        ErreurSaisie::Piece(erreur)
     }
 }

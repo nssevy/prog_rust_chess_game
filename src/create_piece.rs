@@ -1,7 +1,4 @@
-/*
-Ce fichier permet de créer des pièces de jeu d'échecs.
-*/
-use crate::erreur::ErreurPlateau;
+use crate::erreur::ErreurPiece;
 
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub enum TypePiece {
@@ -25,28 +22,28 @@ pub struct Piece {
     pub type_piece: TypePiece,
 }
 
-pub fn type_piece(a: char) -> Result<TypePiece, ErreurPlateau> {
-    match a {
+pub fn type_piece(lettre: char) -> Result<TypePiece, ErreurPiece> {
+    match lettre {
         'K' | 'k' => Ok(TypePiece::Roi),
         'Q' | 'q' => Ok(TypePiece::Dame),
         'N' | 'n' => Ok(TypePiece::Cavalier),
         'R' | 'r' => Ok(TypePiece::Tour),
         'B' | 'b' => Ok(TypePiece::Fou),
         'P' | 'p' => Ok(TypePiece::Pion),
-        _ => return Err(ErreurPlateau::LettreInconnue),
+        _ => return Err(ErreurPiece::LettreInconnue(lettre)),
     }
 }
 
-fn couleur_piece(lettre: char) -> Result<Couleur, ErreurPlateau> {
+fn couleur_piece(lettre: char) -> Result<Couleur, ErreurPiece> {
     match lettre {
         'A'..='Z' => Ok(Couleur::Blanc),
         'a'..='z' => Ok(Couleur::Noir),
-        _ => return Err(ErreurPlateau::PieceInconnue),
+        _ => return Err(ErreurPiece::PieceInconnue),
     }
 }
 
 impl Piece {
-    pub fn construction_de_piece(a: &char) -> Result<Piece, ErreurPlateau> {
+    pub fn construction_de_piece(a: &char) -> Result<Piece, ErreurPiece> {
         let c = couleur_piece(*a)?;
         let t = type_piece(*a)?;
 
