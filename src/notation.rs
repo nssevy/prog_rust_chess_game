@@ -2,6 +2,11 @@ use crate::create_piece::Piece;
 use crate::erreur::{ErreurPlateau, ErreurSaisie};
 use crate::plateau::{CaseType, Plateau, Position, TAILLE_PLATEAU};
 
+pub struct Coup {
+    pub depart: Position,
+    pub arrivee: Position,
+}
+
 fn convertit_les_colonnes_en_lettre_en_chiffre(lettre: char) -> Result<usize, ErreurSaisie> {
     if !('a'..='h').contains(&lettre) {
         return Err(ErreurSaisie::ColonneInvalide(lettre));
@@ -118,6 +123,13 @@ pub fn get_position_plateau(position_saisis: &str) -> Result<Position, ErreurSai
     Ok(Position {
         colonne: colonne,
         rangee: rangee,
+    })
+}
+
+pub fn analyser_coup(plateau: &Plateau, depart: &str, arrivee: &str) -> Result<Coup, ErreurSaisie> {
+    Ok(Coup {
+        depart: get_position_piece(plateau, depart)?,
+        arrivee: get_position_plateau(arrivee)?,
     })
 }
 

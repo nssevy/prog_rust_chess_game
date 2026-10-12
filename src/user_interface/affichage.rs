@@ -1,7 +1,7 @@
 use crate::create_piece::{Couleur, Piece, TypePiece};
 use crate::plateau::{CaseType, Plateau};
 
-pub fn affichage_sur_plateau(piece: &Piece) -> &str {
+fn affichage_sur_plateau(piece: &Piece) -> &str {
     match (piece.couleur, piece.type_piece) {
         (Couleur::Blanc, TypePiece::Roi) => "♚",
         (Couleur::Blanc, TypePiece::Dame) => "♛",

@@ -1,9 +1,3 @@
-/*
-Ce fichier vient établir des règles : dans le plateau, il peut y avoir que deux types d'éléments :
-- une pièce
-- une case vide
-On vient créer le tableau par rapport à la fen Afin de pouvoir déplacer les pièces, etc., à la fin il y a une fonction d'affichage du tableau qui est juste purement esthétique.
- */
 use crate::create_piece::Piece;
 use crate::erreur::ErreurPlateau;
 use crate::fen::valider_fen_structure;

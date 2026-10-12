@@ -4,7 +4,7 @@ mod fen;
 mod notation;
 mod plateau;
 mod user_interface;
-use crate::notation::{get_position_piece, get_position_plateau};
+use crate::notation::analyser_coup;
 use crate::plateau::creation_du_plateau;
 use crate::user_interface::{afficher_plateau, saisie};
 
@@ -17,8 +17,17 @@ fn main() {
 
     afficher_plateau(&plateau);
 
-    let (depart, arrivee) = saisie::demander_coup();
+    /*let (depart, arrivee) = saisie::demander_coup();
 
     println!("{:?}", get_position_piece(&plateau, &depart));
-    println!("{:?}", get_position_plateau(&arrivee));
+    println!("{:?}", get_position_plateau(&arrivee));*/
+
+    let (depart, arrivee) = saisie::demander_coup();
+
+    match analyser_coup(&plateau, &depart, &arrivee) {
+        Ok(_) => {
+            println!("Deplacer piece"); // déplacer la pièce
+        }
+        Err(e) => println!("Coup invalide : {:?}", e),
+    }
 }

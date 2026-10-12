@@ -1,6 +1,3 @@
-/*
- * Ce fichier est en pause. Il me sert strictement à rien.
- */
 use crate::erreur::ErreurPlateau;
 const TAILLE_FEN: usize = 71;
 
