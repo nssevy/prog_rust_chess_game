@@ -1,6 +1,7 @@
 use crate::create_piece::Piece;
 use crate::erreur::ErreurPlateau;
 use crate::fen::valider_fen_structure;
+use crate::notation::Coup;
 use std::ops::{Index, IndexMut};
 
 pub const TAILLE_PLATEAU: usize = 8;
@@ -22,11 +23,6 @@ pub struct Position {
 pub struct Plateau([[CaseType; TAILLE_PLATEAU]; TAILLE_PLATEAU]);
 
 impl Plateau {
-    /*
-    pub fn position_piece(&self, colonne: usize, ligne: usize) -> Position {
-        Position { colonne, ligne }
-    }*/
-
     pub fn get_piece(&self, position: &Position) -> Result<Piece, ErreurPlateau> {
         match self[position.rangee][position.colonne] {
             CaseType::Piece(piece) => Ok(piece),
@@ -34,7 +30,12 @@ impl Plateau {
         }
     }
 
-    //fn deplacer_pion(&self, position_depart: Position, position_fin: Position) {}
+    pub fn deplacer_pion(&mut self, coup: &Coup) -> Result<(), ErreurPlateau> {
+        let piece = self.get_piece(&coup.depart)?;
+        self[coup.depart.rangee][coup.depart.colonne] = CaseType::Vide;
+        self[coup.arrivee.rangee][coup.arrivee.colonne] = CaseType::Piece(piece);
+        Ok(())
+    }
 }
 
 impl Index<usize> for Plateau {
