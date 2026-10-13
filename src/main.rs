@@ -15,5 +15,6 @@ fn main() {
         Ok(plateau) => plateau,
         Err(e) => return println!("Erreur : {:?}", e),
     };
+
     lancer_partie(&mut plateau);
 }

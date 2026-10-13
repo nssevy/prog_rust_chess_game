@@ -16,6 +16,15 @@ pub enum Couleur {
     Noir,  // Minuscule
 }
 
+impl Couleur {
+    pub fn tour_suivant(self) -> Couleur {
+        match self {
+            Couleur::Blanc => Couleur::Noir,
+            Couleur::Noir => Couleur::Blanc,
+        }
+    }
+}
+
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct Piece {
     pub couleur: Couleur,

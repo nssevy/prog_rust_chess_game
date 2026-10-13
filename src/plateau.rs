@@ -8,9 +8,9 @@ pub const TAILLE_PLATEAU: usize = 8;
 
 #[derive(Copy, Clone, Debug, PartialEq, Default)]
 pub enum CaseType {
-    Piece(Piece),
     #[default]
     Vide,
+    Piece(Piece),
 }
 
 #[derive(Debug, PartialEq)]
