@@ -1,5 +1,7 @@
 use crate::create_piece::{Couleur, Piece, TypePiece};
 use crate::plateau::{CaseType, Plateau};
+use std::io;
+use std::io::Write;
 
 fn affichage_sur_plateau(piece: &Piece) -> &str {
     match (piece.couleur, piece.type_piece) {
@@ -41,4 +43,9 @@ pub fn afficher_plateau(cases: &Plateau) {
         print!("{lettre} ");
     }
     print!("\n");
+}
+
+pub fn effacement_terminal() {
+    print!("\x1B[2J\x1B[H");
+    io::stdout().flush().unwrap();
 }
