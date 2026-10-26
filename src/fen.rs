@@ -14,8 +14,7 @@ pub fn calcule_taille_de_la_fen(fen: &str) -> usize {
             chiffre += value;
         }
     }
-    let taille = lettre + chiffre;
-    taille
+    lettre + chiffre
 }
 
 pub fn huit_elements_par_ligne(fen: &str) -> bool {

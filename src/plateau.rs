@@ -52,7 +52,7 @@ impl IndexMut<usize> for Plateau {
 }
 
 pub fn creation_du_plateau(fen: &str) -> Result<Plateau, ErreurPlateau> {
-    valider_fen_structure(&fen)?;
+    valider_fen_structure(fen)?;
 
     let mut plateau = Plateau::default();
     let mut ligne: usize = 0;

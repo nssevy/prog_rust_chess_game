@@ -39,7 +39,7 @@ pub fn type_piece(lettre: char) -> Result<TypePiece, ErreurPiece> {
         'R' | 'r' => Ok(TypePiece::Tour),
         'B' | 'b' => Ok(TypePiece::Fou),
         'P' | 'p' => Ok(TypePiece::Pion),
-        _ => return Err(ErreurPiece::LettreInconnue(lettre)),
+        _ => Err(ErreurPiece::LettreInconnue(lettre)),
     }
 }
 
@@ -47,7 +47,7 @@ fn couleur_piece(lettre: char) -> Result<Couleur, ErreurPiece> {
     match lettre {
         'A'..='Z' => Ok(Couleur::Blanc),
         'a'..='z' => Ok(Couleur::Noir),
-        _ => return Err(ErreurPiece::PieceInconnue),
+        _ => Err(ErreurPiece::PieceInconnue),
     }
 }
 

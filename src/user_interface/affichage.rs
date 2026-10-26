@@ -25,8 +25,12 @@ pub fn afficher_plateau(cases: &Plateau) {
     let mut i: usize = 0;
     let mut nombre_de_gauche: usize = 8;
 
-    for _ in 0..8 {
-        println!("");
+    loop {
+        if i == 8 {
+            break;
+        }
+
+        println!();
         print!("{nombre_de_gauche}    ");
         for piece in cases[i] {
             match piece {
@@ -37,12 +41,13 @@ pub fn afficher_plateau(cases: &Plateau) {
         i += 1;
         nombre_de_gauche -= 1;
     }
-    print!("\n");
+
+    println!();
     print!("\n     ");
     for lettre in 'a'..='h' {
         print!("{lettre} ");
     }
-    print!("\n");
+    println!();
 }
 
 pub fn effacement_terminal() {

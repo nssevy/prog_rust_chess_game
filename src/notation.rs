@@ -21,14 +21,17 @@ fn extraire_colonnes_piece(plateau: &Plateau, piece: char) -> Result<Vec<usize>,
 
     let mut i: usize = 0;
 
-    for _ in 0..8 {
+    loop {
+        i += 1;
         for (colonne, piece) in plateau[i].into_iter().enumerate() {
             match piece {
                 CaseType::Piece(p) if p == piece_extraite => tableau_colonne_piece.push(colonne),
                 _ => {}
             }
         }
-        i += 1;
+        if i == 8 {
+            break;
+        }
     }
 
     Ok(tableau_colonne_piece)
@@ -44,15 +47,13 @@ fn get_colonne(
     let tableau_de_colonne = extraire_colonnes_piece(plateau, piece_en_lettre)?;
 
     match tableau_de_colonne.contains(&colonne) {
-        true => return Ok(colonne),
-        false => {
-            return Err(ErreurSaisie::PieceAbsenteDeLaColonne {
-                piece: piece_en_lettre,
-                colonne_attendue: colonne,
-                colonnes_trouvees: tableau_de_colonne,
-            });
-        }
-    };
+        true => Ok(colonne),
+        false => Err(ErreurSaisie::PieceAbsenteDeLaColonne {
+            piece: piece_en_lettre,
+            colonne_attendue: colonne,
+            colonnes_trouvees: tableau_de_colonne,
+        }),
+    }
 }
 
 fn rangee_en_chiffre(chiffre_en_char: char) -> Result<usize, ErreurSaisie> {
@@ -83,28 +84,26 @@ pub fn get_position_piece(
         _ => return Err(ErreurSaisie::TropCourte),
     };
 
-    let colonne: Result<usize, ErreurSaisie> = get_colonne(&plateau, tuple.1, tuple.0);
+    let colonne: Result<usize, ErreurSaisie> = get_colonne(plateau, tuple.1, tuple.0);
 
-    let rangee: usize = rangee_en_index(rangee_en_chiffre(tuple.2)?);
+    let rangee_nbr: usize = rangee_en_index(rangee_en_chiffre(tuple.2)?);
 
     let position = Position {
         colonne: colonne.clone()?,
-        rangee: rangee,
+        rangee: rangee_nbr,
     };
 
     let piece_extraite: Piece = Piece::construction_de_piece(&tuple.0)?;
 
     match plateau.get_piece(&position) {
-        Ok(piece) if piece == piece_extraite => return Ok(position),
-        Ok(piece_trouvee) => {
-            return Err(ErreurSaisie::MauvaisePiece {
-                piece_attendu: piece_extraite,
-                piece_trouve: piece_trouvee,
-                colonne: colonne?,
-                rangee: rangee,
-            });
-        }
-        Err(e) => return Err(e.into()),
+        Ok(piece) if piece == piece_extraite => Ok(position),
+        Ok(piece_trouvee) => Err(ErreurSaisie::MauvaisePiece {
+            piece_attendu: piece_extraite,
+            piece_trouve: piece_trouvee,
+            colonne: colonne?,
+            rangee: rangee_nbr,
+        }),
+        Err(e) => Err(e.into()),
     }
 }
 
@@ -117,12 +116,12 @@ pub fn get_position_plateau(position_saisis: &str) -> Result<Position, ErreurSai
         _ => return Err(ErreurSaisie::TropCourte),
     };
 
-    let colonne: usize = convertit_les_colonnes_en_lettre_en_chiffre(tuple.0)?;
-    let rangee: usize = rangee_en_index(rangee_en_chiffre(tuple.1)?);
+    let colonne_nbr: usize = convertit_les_colonnes_en_lettre_en_chiffre(tuple.0)?;
+    let rangee_nbr: usize = rangee_en_index(rangee_en_chiffre(tuple.1)?);
 
     Ok(Position {
-        colonne: colonne,
-        rangee: rangee,
+        colonne: colonne_nbr,
+        rangee: rangee_nbr,
     })
 }
 
@@ -150,7 +149,7 @@ mod tests {
     #[test]
     fn dans_la_fen_initiale_la_lettre_n_apparait_2_fois_dans_le_plateau_au_colonne_1_et_6() {
         let fen: &str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
-        let plateau = match creation_du_plateau(&fen) {
+        let plateau = match creation_du_plateau(fen) {
             Ok(plateau) => plateau,
             Err(e) => return println!("Erreur : {:?}", e),
         };
@@ -161,7 +160,7 @@ mod tests {
     #[test]
     fn la_lettre_p_apparait_8_fois_dans_le_plateau() {
         let fen: &str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
-        let plateau = match creation_du_plateau(&fen) {
+        let plateau = match creation_du_plateau(fen) {
             Ok(plateau) => plateau,
             Err(e) => return println!("Erreur : {:?}", e),
         };
@@ -171,7 +170,7 @@ mod tests {
     #[test]
     fn la_lettre_b_apparait_2_fois_dans_le_plateau() {
         let fen: &str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
-        let plateau = match creation_du_plateau(&fen) {
+        let plateau = match creation_du_plateau(fen) {
             Ok(plateau) => plateau,
             Err(e) => return println!("Erreur : {:?}", e),
         };
@@ -181,7 +180,7 @@ mod tests {
     #[test]
     fn check_bc8_equivaut_à_position_colonne_2_et_rangée_0() {
         let fen: &str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
-        let plateau = match creation_du_plateau(&fen) {
+        let plateau = match creation_du_plateau(fen) {
             Ok(plateau) => plateau,
             Err(e) => return println!("Erreur : {:?}", e),
         };
